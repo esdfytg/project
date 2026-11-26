@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ПК — Управление</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 32px;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #1e293b;
+      padding: 24px;
+      border-radius: 16px;
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    input, textarea, select, button {
+      font-family: inherit;
+      font-size: 15px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 14px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    button {
+      background: #2563eb;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    .status { font-size: 13px; color: #34d399; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>Версия для компьютера (ПК)</h2>
+    <div class="row">
+      <label>Комната: <input id="room" value="demo-room-1" /></label>
+      <label>Тема телефона:
+        <select id="theme">
+          <option value="#0f172a">Тёмная</option>
+          <option value="#1e3a8a">Синяя</option>
+          <option value="#064e3b">Изумрудная</option>
+          <option value="#7c2d12">Тёплая</option>
+        </select>
+      </label>
+      <span class="status" id="status">Подключение...</span>
+    </div>
+
+    <div class="row">
+      <input id="title" placeholder="Заголовок на телефоне" value="Привет с компьютера!" style="flex:1" />
+    </div>
+
+    <textarea id="text" placeholder="Введите текст — он сразу появится на телефоне...">Изменения на ПК мгновенно обновляются на экране телефона.</textarea>
+
+    <div class="row" style="margin-top: 16px;">
+      <button id="sendBtn">Отправить / Обновить</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDemoKeyForRealtimeDatabase12345",
+      databaseURL: "https://project-19eb5-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const roomEl = document.getElementById("room");
+    const titleEl = document.getElementById("title");
+    const textEl = document.getElementById("text");
+    const themeEl = document.getElementById("theme");
+    const statusEl = document.getElementById("status");
+
+    function pushUpdate() {
+      const room = (roomEl.value || "default").trim();
+      set(ref(db, "rooms/" + room), {
+        title: titleEl.value,
+        text: textEl.value,
+        theme: themeEl.value,
+        updatedAt: Date.now()
+      })
+        .then(() => {
+          statusEl.textContent = "Синхронизировано: " + new Date().toLocaleTimeString();
+        })
+        .catch((err) => {
+          statusEl.textContent = "Ошибка: " + err.message;
+        });
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", pushUpdate);
+    textEl.addEventListener("input", pushUpdate);
+    titleEl.addEventListener("input", pushUpdate);
+    themeEl.addEventListener("change", pushUpdate);
+
+    pushUpdate();
+  </script>
+</body>
+</html>
