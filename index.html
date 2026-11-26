@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Синхронизация ПК ↔ Телефон</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      align-items: center;
+      justify-content: center;
+    }
+    .box {
+      max-width: 420px;
+      width: 90%;
+      background: #1e293b;
+      padding: 28px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    }
+    a {
+      display: block;
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #fff;
+    }
+    .pc { background: #2563eb; }
+    .phone { background: #059669; }
+    .pc:hover { background: #1d4ed8; }
+    .phone:hover { background: #047857; }
+    p { color: #94a3b8; font-size: 14px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>ПК ↔ Телефон</h1>
+    <p>Откройте <strong>pc.html</strong> на компьютере и <strong>phone.html</strong> на телефоне с одинаковым кодом комнаты.</p>
+    <a class="pc" href="pc.html">Открыть версию для компьютера (ПК)</a>
+    <a class="phone" href="phone.html">Открыть версию для телефона</a>
+  </div>
+</body>
+</html>
